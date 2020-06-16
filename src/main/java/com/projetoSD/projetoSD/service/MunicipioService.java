@@ -17,7 +17,7 @@ public class MunicipioService {
 	@Autowired
 	private MunicipioRepository repository;
 
-	@Transactional
+	
 	public Optional<Municipio> findByCodigo(Long codigo) {
 		return this.repository.findById(codigo);
 	}
@@ -27,8 +27,7 @@ public class MunicipioService {
 	this.repository.deleteById(id);
     }
 
-
-	@Transactional
+	
 	public List<Municipio> findAll() {
 		
 		return this.repository.findAll();

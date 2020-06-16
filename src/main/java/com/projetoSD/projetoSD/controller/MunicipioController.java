@@ -18,22 +18,17 @@ public class MunicipioController {
 	
 	@Autowired
 	MunicipioService service;
-	
-	public MunicipioController(MunicipioService repository) {
-		super();
-		this.service = service;
-	}
 
 	@GetMapping("/{codigo}")
 	public Optional<Municipio> getInfoMunicipios(@PathVariable("codigo") Long codigo) {
-		return service.findByCodigo(codigo);
+		return this.service.findByCodigo(codigo);
 		
 	}
 	
 	@GetMapping("/all")
 	public List<Municipio> getInfoAllMunicipios() {
 		 
-		return service.findAll();
+		return this.service.findAll();
 		
 	}
 	
