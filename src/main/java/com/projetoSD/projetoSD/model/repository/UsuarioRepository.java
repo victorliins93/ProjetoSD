@@ -1,13 +1,16 @@
 package com.projetoSD.projetoSD.model.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.projetoSD.projetoSD.model.entity.Usuario;
 
-@Repository
-public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
-	
-	Usuario findByLogin(String login);
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
+    Optional<Usuario> findByUsername(String username);
+
+    Usuario findUserByUsernameEquals(String username);
 
 }
+

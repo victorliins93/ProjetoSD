@@ -1,97 +1,99 @@
 package com.projetoSD.projetoSD.model.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import static java.util.stream.Collectors.toList;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@Builder
 @Entity
 @Table(name = "users")
-@ToString
-@NoArgsConstructor
+@Builder
+@Setter
+@Getter
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Usuario implements UserDetails {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 5255727504681610495L;
+
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
+	public static final String ROLE_USER = "ROLE_USER";
+
 	@Id
-	@Column(name = "login")
-	private String login;
-	@Column(name = "senha")
-	private String senha;
-	
-	public String getLogin() {
-		return login;
-	}
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long id;
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+	@Column(unique = true, nullable = false)
+	private String username;
 
-	public String getSenha() {
-		return senha;
-	}
+	@JsonIgnore
+	private String password;
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+	@JsonIgnore
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Builder.Default
+	private List<String> roles = new ArrayList<>();
 
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
 	}
 
-	@Override
 	public String getPassword() {
-		return senha;
+		return this.password;
 	}
 
-	@Override
 	public String getUsername() {
-		return login;
+		return this.username;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 }
-
